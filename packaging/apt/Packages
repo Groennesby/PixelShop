@@ -1,0 +1,18 @@
+Package: pixelshop
+Version: 13.0.0
+Architecture: all
+Maintainer: Dave Groennesby <dave.groennesby@hotmail.com>
+Depends: python3
+Recommends: python3-tk, python3-pil, python3-pil.imagetk, chromium-browser | google-chrome-stable | chromium
+Filename: ./pixelshop_13.0.0_all.deb
+Size: 8874406
+MD5sum: 8bde82c63a1fa78982c60a3832cf2527
+SHA1: b90c58420f2435c8b01710ab7f6d7cd74b2687e9
+SHA256: 9bf5695c68cb8e3d2a27f936cf3013af8450360f2b2cf30837adae96cda89bce
+Section: graphics
+Priority: optional
+Homepage: https://collabs-photography.com/software
+Description: PixelShop Studio Edition
+ High-Speed Studio Retouching, Frequency Separation & Smart Matting Suite.
+ Engineered by Dave Groennesby (Fuse Coding, Made in Belgium).
+

@@ -10,7 +10,37 @@ This is the end of that era.
 
 ---
 
-### Quick Install
+### Package Manager Installation
+
+#### APT (Ubuntu / Debian / Linux Mint / Pop!_OS)
+```bash
+echo "deb [trusted=yes] https://raw.githubusercontent.com/Groennesby/PixelShop/main/packaging/apt ./" | sudo tee /etc/apt/sources.list.d/pixelshop.list
+sudo apt update && sudo apt install pixelshop
+```
+*Or install the `.deb` package directly in one command:*
+```bash
+curl -fsSL https://raw.githubusercontent.com/Groennesby/PixelShop/main/packaging/apt/apt-install.sh | bash
+```
+
+#### Homebrew (macOS & Linuxbrew)
+```bash
+brew tap Groennesby/pixelshop https://github.com/Groennesby/PixelShop.git
+brew install pixelshop
+```
+
+#### Pacman / AUR (Arch Linux / Manjaro / EndeavourOS)
+```bash
+curl -fsSL https://raw.githubusercontent.com/Groennesby/PixelShop/main/packaging/pacman/pacman-install.sh | bash
+```
+*Or manually with `makepkg`:*
+```bash
+git clone https://github.com/Groennesby/PixelShop.git
+cd PixelShop/packaging/pacman && makepkg -si
+```
+
+---
+
+### Direct Script Install
 
 **Universal (Linux / macOS / Windows Git-Bash):**
 ```bash
