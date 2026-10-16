@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Starting PixelShop...</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0A0A0C;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .splash-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    /* Loader panel positioned in the dark studio zone on the left (between subtitle & COLLABS logo) */
+    .loader-zone {
+      position: absolute;
+      left: 5.5%;
+      top: 56%;
+      width: 31%;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .loader-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      color: #FFE400;
+      text-transform: uppercase;
+    }
+    .loader-pct {
+      font-family: monospace;
+      font-size: 11.5px;
+      color: #FFE400;
+    }
+    .loader-track {
+      width: 100%;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(255, 228, 0, 0.45);
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+    }
+    .loader-fill {
+      height: 100%;
+      width: 0%;
+      background: #FFE400;
+      box-shadow: 0 0 12px #FFE400;
+      transition: width 0.16s ease-out;
+    }
+    .loader-element {
+      font-size: 10.5px;
+      color: #D4D4DC;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 500;
+    }
+    /* Full-width bottom #FFE400 edge progress bar */
+    .bottom-edge-track {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: rgba(0, 0, 0, 0.8);
+    }
+    .bottom-edge-fill {
+      height: 100%;
+      width: 0%;
+      background: #FFE400;
+      box-shadow: 0 0 10px #FFE400;
+      transition: width 0.16s ease-out;
+    }
+  </style>
+</head>
+<body>
+  <img class="splash-img" src="Splash_Pixelshop.png" alt="PixelShop Splash">
+
+  <div class="loader-zone">
+    <div class="loader-header">
+      <span id="stageTitle">Initializing Core</span>
+      <span class="loader-pct" id="stagePct">0%</span>
+    </div>
+    <div class="loader-track">
+      <div class="loader-fill" id="barFill"></div>
+    </div>
+    <div class="loader-element" id="elementText">Loading 16-Bit Color Engine...</div>
+  </div>
+
+  <div class="bottom-edge-track">
+    <div class="bottom-edge-fill" id="bottomFill"></div>
+  </div>
+
+  <script>
+    const modules = [
+      { pct: 8,  stage: "Core Engine",       item: "Loading 16-Bit RGB/LAB Color Management..." },
+      { pct: 19, stage: "Layer Compositor",  item: "Initializing Non-Destructive Layer & Linear Light Stack..." },
+      { pct: 32, stage: "Matting Engine",    item: "Loading Select Subject Silhouette & Hair Edge Filter..." },
+      { pct: 46, stage: "Sky & Horizon",     item: "Loading Select Sky & Atmospheric Gradient Analyzer..." },
+      { pct: 60, stage: "Background Matte",  item: "Binding Select Background Inverse Boundary Solver..." },
+      { pct: 74, stage: "Studio Actions",    item: "Compiling 16-Bit High-Frequency Separation Pipeline..." },
+      { pct: 86, stage: "Retouch Brushes",   item: "Calibrating Spot Healing, Clone Stamp & Liquify Kernel..." },
+      { pct: 95, stage: "Filter Gallery",    item: "Loading Surface Blur, High Pass & Unsharp Mask Shaders..." },
+      { pct: 100, stage: "Ready",            item: "Starting PixelShop Studio Workspace..." }
+    ];
+
+    let idx = 0;
+    const stageTitle = document.getElementById('stageTitle');
+    const stagePct = document.getElementById('stagePct');
+    const barFill = document.getElementById('barFill');
+    const bottomFill = document.getElementById('bottomFill');
+    const elementText = document.getElementById('elementText');
+
+    function advanceLoader() {
+      if (idx >= modules.length) return;
+      const m = modules[idx];
+      stageTitle.textContent = m.stage;
+      stagePct.textContent = m.pct + '%';
+      barFill.style.width = m.pct + '%';
+      bottomFill.style.width = m.pct + '%';
+      elementText.textContent = m.item;
+      idx++;
+      if (idx < modules.length) {
+        setTimeout(advanceLoader, 360);
+      }
+    }
+    setTimeout(advanceLoader, 80);
+  </script>
+</body>
+</html>

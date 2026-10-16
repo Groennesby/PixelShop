@@ -1,0 +1,825 @@
+/* Pixelshop CS6 Extended — Authentic Dark CS6 UI + Exclusive #FFE400 Accent Styling */
+:root {
+  --accent: #FFE400;
+  --accent-rgb: 255, 228, 0;
+  --accent-dim: rgba(255, 228, 0, 0.16);
+  --accent-hover: rgba(255, 228, 0, 0.24);
+  --bg-tool-panel: #08080A;
+  --bg-panel: #161619;
+  --bg-panel-header: #1F1F24;
+  --bg-canvas: #232327;
+  --bg-menu: #101013;
+  --border-dark: #050507;
+  --border-mid: #2C2C33;
+  --text-main: #ECECEF;
+  --text-muted: #9898A2;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Custom Scrollbars — Yellow #FFE400 Everywhere (Menus, Filters, Panels, Layers) */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #0B0B0E;
+  border-left: 1px solid #1E1E24;
+}
+::-webkit-scrollbar-thumb {
+  background: #FFE400;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #FFF04D;
+  box-shadow: 0 0 6px #FFE400;
+}
+
+body {
+  background: var(--bg-canvas);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+  font-size: 12px;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 1. CS6 TOP MENU BAR */
+.menubar {
+  height: 28px;
+  background: var(--bg-menu);
+  border-bottom: 1px solid var(--border-dark);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 2px;
+  z-index: 1000;
+  flex-shrink: 0;
+}
+
+.brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-right: 12px;
+  margin-right: 6px;
+  border-right: 1px solid var(--border-mid);
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.4px;
+}
+.brand-badge img {
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+}
+
+.menu-item {
+  position: relative;
+  padding: 4px 10px;
+  color: var(--text-main);
+  cursor: pointer;
+  border-radius: 2px;
+  font-size: 12px;
+  transition: background 0.1s, color 0.1s;
+}
+.menu-item:hover,
+.menu-item.open {
+  background: var(--accent);
+  color: #000000;
+  font-weight: 600;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 245px;
+  max-height: 390px;
+  overflow-y: auto;
+  background: #0D0D10;
+  border: 1px solid var(--accent);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.85);
+  padding: 4px 0;
+  z-index: 2000;
+}
+.menu-item.open .dropdown-menu {
+  display: block;
+}
+
+.dropdown-header {
+  padding: 5px 14px 3px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--accent);
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.dropdown-entry {
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text-main);
+  font-weight: 400;
+  cursor: pointer;
+  transition: background 0.08s, color 0.08s;
+}
+.dropdown-entry:hover {
+  background: var(--accent);
+  color: #000000;
+  font-weight: 600;
+}
+.dropdown-entry:hover .shortcut {
+  color: #111111;
+}
+.dropdown-entry .shortcut {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-left: 18px;
+}
+.dropdown-sep {
+  height: 1px;
+  background: #23232A;
+  margin: 4px 0;
+}
+
+.menubar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sample-pill {
+  background: #1B1B20;
+  color: var(--text-main);
+  border: 1px solid #32323A;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.sample-pill:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(255, 228, 0, 0.1);
+}
+
+/* 2. CS6 OPTIONS BAR (CONTEXT RIBBON) */
+.options-bar {
+  height: 36px;
+  background: #141418;
+  border-bottom: 1px solid var(--border-dark);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 12px;
+  flex-shrink: 0;
+  overflow-x: auto;
+}
+
+.active-tool-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  font-weight: 700;
+  padding-right: 10px;
+  border-right: 1px solid var(--border-mid);
+  white-space: nowrap;
+}
+
+.opt-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.opt-group label {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.opt-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 90px;
+  height: 4px;
+  background: #2E2E36;
+  border-radius: 2px;
+  outline: none;
+}
+.opt-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 1px solid #000;
+  box-shadow: 0 0 4px rgba(255, 228, 0, 0.6);
+}
+
+.opt-val {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 11px;
+  min-width: 28px;
+}
+
+.cs6-btn {
+  background: #202026;
+  color: var(--text-main);
+  border: 1px solid #363640;
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+.cs6-btn:hover {
+  background: var(--accent);
+  color: #000000;
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(255, 228, 0, 0.35);
+}
+.cs6-btn.accent-outline {
+  border-color: rgba(255, 228, 0, 0.65);
+  color: var(--accent);
+}
+.cs6-btn.accent-outline:hover {
+  background: var(--accent);
+  color: #000000;
+}
+.cs6-btn.primary {
+  background: var(--accent);
+  color: #000000;
+  border-color: var(--accent);
+}
+.cs6-btn.primary:hover {
+  background: #FFF04D;
+  box-shadow: 0 0 10px rgba(255, 228, 0, 0.55);
+}
+
+.opt-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--border-mid);
+}
+
+/* 3. MAIN WORKSPACE LAYOUT */
+.workspace {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* LEFT BLACK CS6 TOOL PANEL */
+.tool-panel {
+  width: 52px;
+  background: var(--bg-tool-panel);
+  border-right: 1px solid #1C1C22;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 3px;
+  gap: 3px;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+
+.tool-btn {
+  width: 38px;
+  height: 32px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: #C8C8D0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.1s;
+}
+.tool-btn svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.tool-btn:hover {
+  background: rgba(255, 228, 0, 0.14);
+  color: var(--accent);
+  border-color: rgba(255, 228, 0, 0.45);
+}
+.tool-btn.active {
+  background: var(--accent);
+  color: #000000;
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(255, 228, 0, 0.4);
+}
+.tool-btn .hotkey-tag {
+  position: absolute;
+  bottom: 1px;
+  right: 2px;
+  font-size: 8px;
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+.tool-sep {
+  width: 32px;
+  height: 1px;
+  background: #22222A;
+  margin: 3px 0;
+}
+
+/* Foreground / Background Swatch Box in Tool Panel */
+.swatch-box {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+.swatch-fg {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  background: #FFE400;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 1px 4px #000;
+  cursor: pointer;
+  z-index: 2;
+}
+.swatch-bg {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 22px;
+  height: 22px;
+  background: #000000;
+  border: 2px solid #888890;
+  cursor: pointer;
+  z-index: 1;
+}
+
+/* CENTER CANVAS VIEWPORT */
+.canvas-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-canvas);
+  overflow: hidden;
+  position: relative;
+}
+
+.doc-tabs {
+  height: 26px;
+  background: #121216;
+  border-bottom: 1px solid #08080A;
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+  gap: 4px;
+}
+.doc-tab {
+  background: #1E1E24;
+  color: var(--text-main);
+  padding: 4px 12px;
+  border-top: 2px solid var(--accent);
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.doc-tab span.meta {
+  color: var(--accent);
+  font-size: 10px;
+}
+
+.viewport {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1E1E22;
+  background-image: radial-gradient(#2B2B32 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.canvas-stage {
+  position: relative;
+  box-shadow: 0 12px 42px rgba(0, 0, 0, 0.75), 0 0 0 1px #0A0A0D;
+  transform-origin: center center;
+  /* Transparency checkerboard behind layers */
+  background-image:
+    linear-gradient(45deg, #2A2A30 25%, transparent 25%),
+    linear-gradient(-45deg, #2A2A30 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #2A2A30 75%),
+    linear-gradient(-45deg, transparent 75%, #2A2A30 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  background-color: #1F1F24;
+}
+
+#displayCanvas {
+  display: block;
+}
+
+#overlayCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+/* Floating Brush / Clone Cursor Ring */
+#brushCursor {
+  position: fixed;
+  pointer-events: none;
+  border: 1.5px solid #FFE400;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.75);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  z-index: 900;
+}
+
+/* Toast / Action Status Overlay */
+.status-toast {
+  position: absolute;
+  top: 38px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10, 10, 14, 0.92);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 7px 16px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+  display: none;
+  z-index: 1200;
+  pointer-events: none;
+}
+
+/* Bottom Status Bar */
+.status-bar {
+  height: 24px;
+  background: #101014;
+  border-top: 1px solid #060608;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 18px;
+  font-size: 11px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.status-bar b {
+  color: var(--accent);
+}
+
+/* RIGHT CS6 DOCKABLE PANELS */
+.right-dock {
+  width: 320px;
+  background: var(--bg-panel);
+  border-left: 1px solid var(--border-dark);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+
+.panel-section {
+  border-bottom: 1px solid #09090C;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-header {
+  height: 26px;
+  background: var(--bg-panel-header);
+  border-bottom: 1px solid #0D0D10;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--accent);
+}
+
+.panel-body {
+  padding: 10px;
+}
+
+/* Histogram Canvas */
+#histogramCanvas {
+  width: 100%;
+  height: 68px;
+  background: #0C0C0F;
+  border: 1px solid #26262E;
+  border-radius: 2px;
+  display: block;
+}
+
+/* AI Selection & High-Frequency Separation Studio Card */
+.ai-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.ai-card-btn {
+  background: #101014;
+  border: 1px solid #2E2E38;
+  color: var(--text-main);
+  padding: 7px 4px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.12s;
+}
+.ai-card-btn:hover {
+  background: var(--accent);
+  color: #000000;
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(255, 228, 0, 0.35);
+}
+
+.action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #101014;
+  border: 1px solid #2A2A34;
+  padding: 7px 9px;
+  border-radius: 3px;
+  margin-bottom: 6px;
+}
+.action-row:hover {
+  border-color: var(--accent);
+}
+.action-title {
+  font-weight: 600;
+  color: var(--text-main);
+  font-size: 11.5px;
+}
+.action-sub {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* Sliders in Adjustments Panel */
+.adj-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 7px;
+  gap: 8px;
+}
+.adj-row label {
+  font-size: 11px;
+  color: #CCCCD4;
+  width: 78px;
+}
+.adj-row input[type="range"] {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: #2B2B33;
+  border-radius: 2px;
+}
+.adj-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 1px solid #000;
+}
+.adj-row .val {
+  width: 32px;
+  text-align: right;
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* CS6 LAYERS PANEL */
+.layers-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.cs6-select {
+  background: #0E0E12;
+  color: var(--text-main);
+  border: 1px solid #32323C;
+  padding: 4px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  flex: 1;
+  outline: none;
+  cursor: pointer;
+}
+.cs6-select:hover, .cs6-select:focus {
+  border-color: var(--accent);
+}
+.cs6-select option {
+  background: #0E0E12;
+  color: var(--text-main);
+}
+
+.layers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.layer-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: #121216;
+  border: 1px solid #26262E;
+  padding: 5px 7px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+.layer-item:hover {
+  border-color: rgba(255, 228, 0, 0.5);
+  background: #1A1A20;
+}
+.layer-item.active {
+  background: rgba(255, 228, 0, 0.15);
+  border-color: var(--accent);
+}
+.layer-vis {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 12px;
+}
+.layer-thumb {
+  width: 32px;
+  height: 24px;
+  background: #222;
+  border: 1px solid #444;
+  object-fit: cover;
+  border-radius: 2px;
+}
+.layer-mask-thumb {
+  width: 24px;
+  height: 24px;
+  background: #000;
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  object-fit: cover;
+}
+.layer-info {
+  flex: 1;
+  overflow: hidden;
+}
+.layer-name {
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.layer-item.active .layer-name {
+  color: var(--accent);
+}
+.layer-meta {
+  font-size: 9.5px;
+  color: var(--text-muted);
+}
+
+.layers-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid #24242C;
+}
+
+/* History List */
+.history-list {
+  max-height: 115px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.history-entry {
+  padding: 4px 8px;
+  font-size: 11px;
+  border-radius: 2px;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+}
+.history-entry:hover {
+  background: rgba(255, 228, 0, 0.14);
+  color: var(--accent);
+}
+.history-entry.current {
+  background: var(--accent);
+  color: #000000;
+  font-weight: 700;
+}
+
+/* Modal Dialog (Frequency Separation / Filter Dialog) */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+.modal-backdrop.open {
+  display: flex;
+}
+.cs6-modal {
+  width: 420px;
+  background: #16161B;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.9);
+  overflow: hidden;
+}
+.cs6-modal-header {
+  background: #0D0D10;
+  padding: 10px 14px;
+  border-bottom: 1px solid #2A2A32;
+  color: var(--accent);
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cs6-modal-body {
+  padding: 16px;
+}
+.cs6-modal-footer {
+  padding: 10px 16px;
+  background: #101014;
+  border-top: 1px solid #26262E;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}

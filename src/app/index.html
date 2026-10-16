@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PixelShop — Studio Edition</title>
+  <link rel="icon" href="icon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- IN-APP INTERACTIVE SPLASH SCREEN OVERLAY (WITH REAL MODULE LOADING BAR) -->
+  <div id="inAppSplashOverlay" style="position:fixed;inset:0;background:#0A0A0C;z-index:99999;display:flex;align-items:center;justify-content:center;transition:opacity 0.45s ease;">
+    <div style="position:relative;width:min(960px, 94vw);aspect-ratio:1376/768;box-shadow:0 24px 80px rgba(0,0,0,0.95);border:1px solid rgba(255,228,0,0.35);overflow:hidden;background:#0A0A0C;">
+      <img src="Splash_Pixelshop.png" alt="PixelShop Splash" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div style="position:absolute;left:5.5%;top:56%;width:31%;display:flex;flex-direction:column;gap:7px;">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:11px;font-weight:700;letter-spacing:0.6px;color:#FFE400;text-transform:uppercase;">
+          <span id="inAppSplashStage">Core Engine</span>
+          <span id="inAppSplashPct" style="font-family:monospace;">0%</span>
+        </div>
+        <div style="width:100%;height:7px;background:rgba(255,255,255,0.09);border:1px solid rgba(255,228,0,0.45);border-radius:3px;overflow:hidden;">
+          <div id="inAppSplashBar" style="height:100%;width:0%;background:#FFE400;box-shadow:0 0 12px #FFE400;transition:width 0.16s ease-out;"></div>
+        </div>
+        <div id="inAppSplashItem" style="font-size:10.5px;color:#D4D4DC;letter-spacing:0.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;">
+          Loading 16-Bit RGB/LAB Color Management...
+        </div>
+      </div>
+      <div style="position:absolute;bottom:0;left:0;width:100%;height:4px;background:rgba(0,0,0,0.8);">
+        <div id="inAppSplashBottomBar" style="height:100%;width:0%;background:#FFE400;box-shadow:0 0 10px #FFE400;transition:width 0.16s ease-out;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. TOP MENU BAR WITH #FFE400 HOVER & SCROLLABLE DROPDOWNS -->
+  <header class="menubar" id="menubar">
+    <div class="brand-badge">
+      <img src="icon.png" alt="Ps">
+      <span>PixelShop</span>
+    </div>
+
+    <div class="menu-item" data-menu="file">
+      <span>File</span>
+      <div class="dropdown-menu">
+        <div class="dropdown-entry" data-action="file-new"><span>New Blank Canvas...</span><span class="shortcut">Ctrl+N</span></div>
+        <div class="dropdown-entry" data-action="file-open"><span>Open Photo...</span><span class="shortcut">Ctrl+O</span></div>
+        <div class="dropdown-sep"></div>
+        <div class="dropdown-header">Studio Sample Portraits</div>
+        <div class="dropdown-entry" data-action="sample-1"><span>Open Farida Studio Portrait 11</span><span class="shortcut">RAW/JPG</span></div>
+        <div class="dropdown-entry" data-action="sample-2"><span>Open Farida Studio Portrait 4</span><span class="shortcut">RAW/JPG</span></div>
+        <div class="dropdown-entry" data-action="sample-3"><span>Open Farida Studio Portrait 9</span><span class="shortcut">RAW/JPG</span></div>
+        <div class="dropdown-sep"></div>
+        <div class="dropdown-entry" data-action="file-export-jpg"><span>Save For Web / Export JPEG (100%)...</span><span class="shortcut">Ctrl+Shift+S</span></div>
+        <div class="dropdown-entry" data-action="file-export-png"><span>Export Transparent PNG (Cutout)...</span><span class="shortcut">Ctrl+Alt+S</span></div>
+      </div>
+    </div>
+
+    <div class="menu-item" data-menu="edit">
+      <span>Edit</span>
+      <div class="dropdown-menu">
+        <div class="dropdown-entry" data-action="edit-undo"><span>Undo / Step Backward</span><span class="shortcut">Ctrl+Z</span></div>
+        <div class="dropdown-entry" data-action="edit-redo"><span>Redo / Step Forward</span><span class="shortcut">Ctrl+Y</span></div>
+        <div class="dropdown-sep"></div>
+        <div class="dropdown-entry" data-action="edit-fill-fg"><span>Fill Selection with Foreground (#FFE400)</span><span class="shortcut">Alt+Backspace</span></div>
+        <div class="dropdown-entry" data-action="edit-clear-sel"><span>Delete / Cut Out Inside Selection</span><span class="shortcut">Del</span></div>
+      </div>
+    </div>
+
+    <div class="menu-item" data-menu="image">
+      <span>Image</span>
+      <div class="dropdown-menu">
+        <div class="dropdown-header">CS6 Tone & Color</div>
+        <div class="dropdown-entry" data-action="img-autotone"><span>Auto Tone & Contrast (CS6)</span><span class="shortcut">Ctrl+Shift+L</span></div>
+        <div class="dropdown-entry" data-action="img-reset-adj"><span>Reset Layer Adjustments</span></div>
+        <div class="dropdown-sep"></div>
+        <div class="dropdown-header">Canvas Orientation</div>
+        <div class="dropdown-entry" data-action="img-flip-h"><span>Flip Canvas Horizontal</span></div>
+        <div class="dropdown-entry" data-action="img-flip-v"><span>Flip Canvas Vertical</span></div>
+        <div class="dropdown-entry" data-action="img-flatten"><span>Flatten All Visible Layers</span><span class="shortcut">Ctrl+Shift+E</span></div>
+      </div>
+    </div>
+
+    <div class="menu-item" data-menu="layer">
+      <span>Layer</span>
+      <div class="dropdown-menu">
+        <div class="dropdown-entry" data-action="layer-dup"><span>Duplicate Active Layer</span><span class="shortcut">Ctrl+J</span></div>
+        <div class="dropdown-entry" data-action="layer-new"><span>New Empty Paint Layer</span><span class="shortcut">Ctrl+Shift+N</span></div>
+        <div class="dropdown-sep"></div>
+        <div class="dropdown-header">Masking & Extraction</div>
+        <div class="dropdown-entry" data-action="layer-mask-from-sel"><span>Apply Active Selection as Layer Mask</span></div>
+        <div class="dropdown-entry" data-action="layer-extract-subject"><span>One-Click Extract Subject to New Layer</span></div>
+        <div class="dropdown-sep"></div>
+        <div class="dropdown-entry" data-action="layer-freq-sep"><span>Run 16-Bit High-Frequency Separation Action...</span><span class="shortcut">Ctrl+Shift+F</span></div>
+        <div class="dropdown-entry" data-action="layer-delete"><span>Delete Active Layer</span></div>
+      </div>
+    </div>
+
+    <div class="menu-item" data-menu="select">
+      <span>Select</span>
+      <div class="dropdown-menu">
+        <div class="dropdown-header">Smart Matte Selection</div>
+        <div class="dropdown-entry" data-action="ai-select-subject"><span>Select Subject (Precision Matte)</span><span class="shortcut">Alt+S</span></div>
+        <div class="dropdown-entry" data-action="ai-select-sky"><span>Select Sky (Atmospheric Horizon Matte)</span><span class="shortcut">Alt+K</span></div>
+        <div class="dropdown-entry" data-action="ai-select-bg"><span>Select Background (Inverse Studio Matte)</span><span class="shortcut">Alt+B</span></div>
+        <div class="dropdown-sep"></div>
+        <div class="dropdown-header">Standard Selection</div>
+        <div class="dropdown-entry" data-action="sel-all"><span>Select All</span><span class="shortcut">Ctrl+A</span></div>
+        <div class="dropdown-entry" data-action="sel-deselect"><span>Deselect</span><span class="shortcut">Ctrl+D</span></div>
+        <div class="dropdown-entry" data-action="sel-invert"><span>Inverse Selection</span><span class="shortcut">Ctrl+Shift+I</span></div>
+        <div class="dropdown-sep"></div>
+        <div class="dropdown-entry" data-action="sel-feather"><span>Feather / Refine Selection Edge (3px)</span></div>
+        <div class="dropdown-entry" data-action="layer-mask-from-sel"><span>Convert Selection to Layer Mask</span></div>
+      </div>
+    </div>
+
+    <div class="menu-item" data-menu="filter">
+      <span>Filter</span>
+      <div class="dropdown-menu">
+        <div class="dropdown-header">Retouching & Frequency Separation</div>
+        <div class="dropdown-entry" data-action="layer-freq-sep"><span>High-Frequency Separation (16-Bit Action)...</span><span class="shortcut">Ctrl+Shift+F</span></div>
+        <div class="dropdown-entry" data-action="filter-surface-blur"><span>Surface Blur (Skin Smoothing)</span></div>
+        <div class="dropdown-entry" data-action="filter-high-pass"><span>High Pass (128 Neutral Detail)...</span></div>
+        <div class="dropdown-sep"></div>
+        <div class="dropdown-header">Blur Gallery</div>
+        <div class="dropdown-entry" data-action="filter-gaussian-4"><span>Gaussian Blur (Radius 4.0 px)</span></div>
+        <div class="dropdown-entry" data-action="filter-gaussian-10"><span>Gaussian Blur (Radius 10.0 px)</span></div>
+        <div class="dropdown-entry" data-action="filter-gaussian-22"><span>Gaussian Blur (Studio Depth 22.0 px)</span></div>
+        <div class="dropdown-sep"></div>
+        <div class="dropdown-header">Sharpen</div>
+        <div class="dropdown-entry" data-action="filter-unsharp"><span>Unsharp Mask (Portrait Crisp 120%)</span></div>
+        <div class="dropdown-entry" data-action="filter-smart-sharpen"><span>Smart Sharpen (Micro-Contrast)</span></div>
+        <div class="dropdown-sep"></div>
+        <div class="dropdown-header">Stylize & Color Grading</div>
+        <div class="dropdown-entry" data-action="filter-bw-highcontrast"><span>High-Contrast Studio B&amp;W</span></div>
+        <div class="dropdown-entry" data-action="filter-golden-hour"><span>Warm Golden Hour Grade</span></div>
+        <div class="dropdown-entry" data-action="filter-cinema-teal"><span>Cinematic Teal &amp; Warm Skin</span></div>
+        <div class="dropdown-entry" data-action="filter-vignette"><span>Optical Lens Vignette</span></div>
+      </div>
+    </div>
+
+    <div class="menu-item" data-menu="view">
+      <span>View</span>
+      <div class="dropdown-menu">
+        <div class="dropdown-entry" data-action="view-fit"><span>Fit on Screen</span><span class="shortcut">Ctrl+0</span></div>
+        <div class="dropdown-entry" data-action="view-100"><span>100% Actual Pixels</span><span class="shortcut">Ctrl+1</span></div>
+        <div class="dropdown-entry" data-action="view-zoom-in"><span>Zoom In</span><span class="shortcut">Ctrl++</span></div>
+        <div class="dropdown-entry" data-action="view-zoom-out"><span>Zoom Out</span><span class="shortcut">Ctrl+-</span></div>
+        <div class="dropdown-sep"></div>
+        <div class="dropdown-entry" data-action="view-toggle-mask-overlay"><span>Toggle Yellow Selection Matte Overlay</span><span class="shortcut">Q</span></div>
+      </div>
+    </div>
+
+    <div class="menubar-right">
+      <button class="sample-pill" id="btnQuickOpen">Open Photo...</button>
+      <button class="sample-pill" id="btnSamplePortrait">Load Studio Sample</button>
+      <button class="sample-pill" id="btnCompareHold" title="Hold to compare with original unedited photo">Hold Original</button>
+    </div>
+  </header>
+
+  <!-- 2. CS6 TOOL OPTIONS BAR (CONTEXT-SENSITIVE + ONE-CLICK AI SELECT + FREQ SEP) -->
+  <div class="options-bar">
+    <div class="active-tool-badge" id="activeToolLabel">
+      <span>Healing Brush (J)</span>
+    </div>
+
+    <div class="opt-group">
+      <label>Size:</label>
+      <input type="range" class="opt-slider" id="optBrushSize" min="3" max="260" value="48">
+      <span class="opt-val" id="optBrushSizeVal">48 px</span>
+    </div>
+
+    <div class="opt-group">
+      <label>Hardness:</label>
+      <input type="range" class="opt-slider" id="optBrushHardness" min="0" max="100" value="25">
+      <span class="opt-val" id="optBrushHardnessVal">25%</span>
+    </div>
+
+    <div class="opt-group">
+      <label>Strength / Flow:</label>
+      <input type="range" class="opt-slider" id="optBrushStrength" min="5" max="100" value="65">
+      <span class="opt-val" id="optBrushStrengthVal">65%</span>
+    </div>
+
+    <div class="opt-group" id="wandToleranceGroup" style="display:none;">
+      <label>Tolerance:</label>
+      <input type="range" class="opt-slider" id="optWandTolerance" min="4" max="120" value="32">
+      <span class="opt-val" id="optWandToleranceVal">32</span>
+    </div>
+
+    <div class="opt-sep"></div>
+
+    <!-- Smart Selection Bar -->
+    <button class="cs6-btn accent-outline" id="btnTopSelectSubject" title="Select Subject (Alt+S)">
+      Select Subject
+    </button>
+    <button class="cs6-btn accent-outline" id="btnTopSelectSky" title="Select Sky (Alt+K)">
+      Select Sky
+    </button>
+    <button class="cs6-btn accent-outline" id="btnTopSelectBg" title="Select Background (Alt+B)">
+      Select Background
+    </button>
+    <button class="cs6-btn" id="btnTopMaskSelection" title="Apply active selection as non-destructive layer mask">
+      Mask Selection
+    </button>
+
+    <div class="opt-sep"></div>
+
+    <!-- 16-Bit High-Frequency Separation Action Trigger -->
+    <button class="cs6-btn primary" id="btnTopFreqSep" title="Run 16-Bit High-Frequency Separation Action (Low Tone + High Texture Linear Light)">
+      HF Separation (16-Bit Action)
+    </button>
+  </div>
+
+  <!-- 3. MAIN WORKSPACE: BLACK CS6 TOOLBOX + CENTRAL VIEWPORT + RIGHT DOCK -->
+  <div class="workspace">
+
+    <!-- LEFT BLACK CS6 TOOL PANEL (#08080A with #FFE400 Active/Hover) -->
+    <aside class="tool-panel" id="toolPanel">
+      <button class="tool-btn" data-tool="move" title="Move & Pan Tool (V)">
+        <svg viewBox="0 0 24 24"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></svg>
+        <span class="hotkey-tag">V</span>
+      </button>
+
+      <button class="tool-btn" data-tool="marquee" title="Rectangular Marquee Selection Tool (M)">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" stroke-dasharray="3 2"/></svg>
+        <span class="hotkey-tag">M</span>
+      </button>
+
+      <button class="tool-btn" data-tool="lasso" title="Freehand Polygonal/Lasso Selection Tool (L)">
+        <svg viewBox="0 0 24 24"><path d="M7 18c-3.3 0-5-2.5-5-5.5C2 7.8 6.5 4 12 4s10 3.8 10 8.5c0 3-2.5 5.5-6 5.5-2.5 0-4.5-1-4.5-2.5 0-1.2 1.2-2 2.5-2s2.2.7 2.2 1.7"/><path d="M7 18l-2 4"/></svg>
+        <span class="hotkey-tag">L</span>
+      </button>
+
+      <button class="tool-btn" data-tool="wand" title="Quick Selection / Magic Wand Tool (W)">
+        <svg viewBox="0 0 24 24"><path d="M15 4V2M15 16v-2M8 9h2M20 9h2M17.8 11.8L19 13M17.8 6.2L19 5M3 21l9-9M12.2 6.2L11 5"/></svg>
+        <span class="hotkey-tag">W</span>
+      </button>
+
+      <button class="tool-btn" data-tool="crop" title="Crop & Straighten Tool (C) — Drag box to crop">
+        <svg viewBox="0 0 24 24"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>
+        <span class="hotkey-tag">C</span>
+      </button>
+
+      <div class="tool-sep"></div>
+
+      <button class="tool-btn active" data-tool="heal" title="Spot Healing & Blemish Removal Brush (J) — Ideal on High-Frequency Layer">
+        <svg viewBox="0 0 24 24"><rect x="5" y="9" width="14" height="6" rx="3" transform="rotate(-45 12 12)"/><circle cx="10" cy="14" r="1"/><circle cx="14" cy="10" r="1"/></svg>
+        <span class="hotkey-tag">J</span>
+      </button>
+
+      <button class="tool-btn" data-tool="freqsmooth" title="Low-Frequency Skin Tone Mixer / Evenness Brush (F) — Smooths blotchiness while preserving pores">
+        <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-4.97-4.03-9-9-9z"/><path d="M8 12h8M12 8v8"/></svg>
+        <span class="hotkey-tag">F</span>
+      </button>
+
+      <button class="tool-btn" data-tool="clone" title="Clone Stamp Tool (S) — Hold Alt + Click to sample source">
+        <svg viewBox="0 0 24 24"><path d="M5 20h14M7 16h10l-1-6H8l-1 6zM10 10V6a2 2 0 1 1 4 0v4"/></svg>
+        <span class="hotkey-tag">S</span>
+      </button>
+
+      <button class="tool-btn" data-tool="brush" title="Paint & Layer Mask Brush Tool (B)">
+        <svg viewBox="0 0 24 24"><path d="M18.37 2.63L14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3z"/><path d="M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7"/></svg>
+        <span class="hotkey-tag">B</span>
+      </button>
+
+      <button class="tool-btn" data-tool="eraser" title="Eraser Tool (E)">
+        <svg viewBox="0 0 24 24"><path d="M20 20H7L3 16C2 15 2 13 3 12L13 2L22 11L20 20Z"/><path d="M17 17L7 7"/></svg>
+        <span class="hotkey-tag">E</span>
+      </button>
+
+      <div class="tool-sep"></div>
+
+      <button class="tool-btn" data-tool="dodge" title="Dodge Tool — Brighten Highlights/Midtones (O)">
+        <svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M14.5 14.5L21 21"/></svg>
+        <span class="hotkey-tag">O</span>
+      </button>
+
+      <button class="tool-btn" data-tool="burn" title="Burn Tool — Deepen Shadows/Contours (D)">
+        <svg viewBox="0 0 24 24"><path d="M12 2C7 7 5 11 5 15a7 7 0 0 0 14 0c0-4-2-8-7-13z"/></svg>
+        <span class="hotkey-tag">D</span>
+      </button>
+
+      <button class="tool-btn" data-tool="liquify" title="Liquify Push/Sculpt Brush (L/Q) — Reshape contours smoothly">
+        <svg viewBox="0 0 24 24"><path d="M3 12c3-4 6-4 9 0s6 4 9 0"/><path d="M3 17c3-4 6-4 9 0s6 4 9 0"/><path d="M3 7c3-4 6-4 9 0s6 4 9 0"/></svg>
+        <span class="hotkey-tag">P</span>
+      </button>
+
+      <div class="tool-sep"></div>
+
+      <button class="tool-btn" data-tool="eyedropper" title="Eyedropper Color Sampler (I)">
+        <svg viewBox="0 0 24 24"><path d="M2 22l1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="M15 6l3-3 3 3-3 3"/><path d="M12 9l6 6"/></svg>
+        <span class="hotkey-tag">I</span>
+      </button>
+
+      <button class="tool-btn" data-tool="hand" title="Hand Pan Tool (H / Spacebar)">
+        <svg viewBox="0 0 24 24"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v6"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+        <span class="hotkey-tag">H</span>
+      </button>
+
+      <button class="tool-btn" data-tool="zoom" title="Zoom Tool (Z — Click to Zoom In, Alt+Click to Zoom Out)">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg>
+        <span class="hotkey-tag">Z</span>
+      </button>
+
+      <!-- Foreground / Background Swatch -->
+      <div class="swatch-box" title="Foreground (#FFE400) & Background Swatches — Click to change">
+        <input type="color" id="fgColorPicker" value="#FFE400" style="display:none;">
+        <div class="swatch-fg" id="swatchFg"></div>
+        <div class="swatch-bg" id="swatchBg"></div>
+      </div>
+    </aside>
+
+    <!-- CENTER DOCUMENT VIEWPORT -->
+    <main class="canvas-area">
+      <div class="doc-tabs">
+        <div class="doc-tab">
+          <span id="docTitle">Farida studio-11.jpg</span>
+          <span class="meta" id="docDimensions">RGB/16-Bit HF • 100%</span>
+        </div>
+      </div>
+
+      <div class="viewport" id="viewport">
+        <div class="status-toast" id="statusToast">Select Subject Completed</div>
+        <div class="canvas-stage" id="canvasStage">
+          <canvas id="displayCanvas" width="1200" height="800"></canvas>
+          <canvas id="overlayCanvas" width="1200" height="800"></canvas>
+        </div>
+        <div id="brushCursor"></div>
+      </div>
+
+      <footer class="status-bar">
+        <span>Zoom: <b id="statusZoom">100%</b></span>
+        <span>Document: <b id="statusRes">1200 × 800 px</b></span>
+        <span>Active Layer: <b id="statusActiveLayer">Background</b></span>
+        <span>Selection: <b id="statusSelection">None</b></span>
+        <span style="margin-left:auto;">Engine: <b>PixelShop High-Speed Core • Fuse Coding • Belgium</b></span>
+      </footer>
+    </main>
+
+    <!-- RIGHT CS6 DOCKABLE PANELS -->
+    <aside class="right-dock">
+
+      <!-- 1. HISTOGRAM & INFO PANEL -->
+      <section class="panel-section">
+        <div class="panel-header">
+          <span>Histogram &amp; RGB Channels</span>
+          <span id="cursorRGBInfo" style="font-size:10px;color:#AAA;text-transform:none;">R:-- G:-- B:--</span>
+        </div>
+        <div class="panel-body">
+          <canvas id="histogramCanvas" width="290" height="68"></canvas>
+        </div>
+      </section>
+
+      <!-- 2. SMART SELECTION & HIGH-FREQUENCY SEPARATION PANEL -->
+      <section class="panel-section">
+        <div class="panel-header">
+          <span>Selection &amp; Studio Actions</span>
+          <span>16-Bit Core</span>
+        </div>
+        <div class="panel-body">
+          <div class="ai-grid">
+            <button class="ai-card-btn" id="btnPanelSubject">Select Subject</button>
+            <button class="ai-card-btn" id="btnPanelSky">Select Sky</button>
+            <button class="ai-card-btn" id="btnPanelBg">Select BG</button>
+          </div>
+          <div style="display:flex; gap:6px; margin-bottom:10px;">
+            <button class="cs6-btn" id="btnPanelInvertSel" style="flex:1;justify-content:center;">Invert Sel</button>
+            <button class="cs6-btn" id="btnPanelFeatherSel" style="flex:1;justify-content:center;">Feather</button>
+            <button class="cs6-btn" id="btnPanelExtractLayer" style="flex:1;justify-content:center;">Cut to Layer</button>
+          </div>
+
+          <div class="action-row">
+            <div>
+              <div class="action-title">High-Frequency Separation</div>
+              <div class="action-sub">Low Color/Tone + High Texture (Linear Light)</div>
+            </div>
+            <button class="cs6-btn primary" id="btnPanelFreqSep">Run Action</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. CS6 IMAGE ADJUSTMENTS PANEL -->
+      <section class="panel-section">
+        <div class="panel-header">
+          <span>Adjustments (Active Layer)</span>
+          <button class="cs6-btn" id="btnResetAdj" style="padding:1px 6px;font-size:10px;">Reset</button>
+        </div>
+        <div class="panel-body">
+          <div class="adj-row">
+            <label>Exposure</label>
+            <input type="range" id="adjExposure" min="-100" max="100" value="0">
+            <span class="val" id="valExposure">0</span>
+          </div>
+          <div class="adj-row">
+            <label>Contrast</label>
+            <input type="range" id="adjContrast" min="-100" max="100" value="0">
+            <span class="val" id="valContrast">0</span>
+          </div>
+          <div class="adj-row">
+            <label>Highlights</label>
+            <input type="range" id="adjHighlights" min="-100" max="100" value="0">
+            <span class="val" id="valHighlights">0</span>
+          </div>
+          <div class="adj-row">
+            <label>Shadows</label>
+            <input type="range" id="adjShadows" min="-100" max="100" value="0">
+            <span class="val" id="valShadows">0</span>
+          </div>
+          <div class="adj-row">
+            <label>Temperature</label>
+            <input type="range" id="adjTemp" min="-100" max="100" value="0">
+            <span class="val" id="valTemp">0</span>
+          </div>
+          <div class="adj-row">
+            <label>Vibrance</label>
+            <input type="range" id="adjSaturation" min="-100" max="100" value="0">
+            <span class="val" id="valSaturation">0</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. CS6 LAYERS & BLEND MODES PANEL -->
+      <section class="panel-section" style="flex:1;">
+        <div class="panel-header">
+          <span>Layers</span>
+          <span id="layerCountLabel">1 Layer</span>
+        </div>
+        <div class="panel-body" style="display:flex;flex-direction:column;flex:1;">
+          <div class="layers-controls">
+            <select class="cs6-select" id="layerBlendMode" title="CS6 Layer Blend Mode (including Linear Light for High-Frequency Separation)">
+              <option value="normal">Normal</option>
+              <option value="linearLight">Linear Light (HF Sep)</option>
+              <option value="overlay">Overlay</option>
+              <option value="softLight">Soft Light</option>
+              <option value="multiply">Multiply</option>
+              <option value="screen">Screen</option>
+              <option value="luminosity">Luminosity</option>
+            </select>
+            <label style="font-size:11px;color:#AAA;">Opac:</label>
+            <input type="range" class="opt-slider" id="layerOpacity" min="0" max="100" value="100" style="width:62px;">
+            <span class="opt-val" id="layerOpacityVal">100%</span>
+          </div>
+
+          <div class="layers-list" id="layersList"></div>
+
+          <div class="layers-footer">
+            <button class="cs6-btn" id="btnAddLayer" title="New Paint Layer">+ Layer</button>
+            <button class="cs6-btn" id="btnDupLayer" title="Duplicate Layer (Ctrl+J)">Duplicate</button>
+            <button class="cs6-btn" id="btnMaskLayer" title="Apply Selection as Layer Mask">Add Mask</button>
+            <button class="cs6-btn" id="btnDelLayer" title="Delete Active Layer">Delete</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. CS6 HISTORY PANEL -->
+      <section class="panel-section">
+        <div class="panel-header">
+          <span>History</span>
+          <span id="historyStepLabel">1 / 1</span>
+        </div>
+        <div class="panel-body">
+          <div class="history-list" id="historyList"></div>
+        </div>
+      </section>
+
+    </aside>
+  </div>
+
+  <!-- HIGH-FREQUENCY SEPARATION DIALOG MODAL -->
+  <div class="modal-backdrop" id="freqSepModal">
+    <div class="cs6-modal">
+      <div class="cs6-modal-header">
+        <span>16-Bit High-Frequency Separation Action</span>
+        <span style="cursor:pointer;" id="closeFreqSepModal">✕</span>
+      </div>
+      <div class="cs6-modal-body">
+        <p style="color:#CCCCD4;font-size:11.5px;line-height:1.5;margin-bottom:14px;">
+          Splits the active portrait into two mathematically exact non-destructive layers:<br>
+          • <b style="color:#FFE400;">Low Frequency (Color &amp; Tone)</b> — Gaussian blurred skin transition layer.<br>
+          • <b style="color:#FFE400;">High Frequency (Texture &amp; Pores)</b> — Neutral 128 gray detail layer set to <b>Linear Light</b> blend mode.
+        </p>
+        <div class="adj-row" style="margin-bottom:12px;">
+          <label style="width:115px;color:#FFE400;font-weight:600;">Blur Radius (px):</label>
+          <input type="range" id="freqSepRadiusInput" min="2" max="28" value="9" step="0.5">
+          <span class="val" id="freqSepRadiusVal">9.0 px</span>
+        </div>
+        <div style="font-size:11px;color:#9898A2;">
+          Recommended: <b>6–10 px</b> for studio portraits, <b>12–18 px</b> for close-up beauty headshots. Auto-selects the Healing/Smoothing tool when complete.
+        </div>
+      </div>
+      <div class="cs6-modal-footer">
+        <button class="cs6-btn" id="cancelFreqSepBtn">Cancel</button>
+        <button class="cs6-btn primary" id="confirmFreqSepBtn">Run High-Frequency Action</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden File Input for Local Images -->
+  <input type="file" id="fileInput" accept="image/*" style="display:none;">
+
+  <script src="retouch_engine.js"></script>
+</body>
+</html>

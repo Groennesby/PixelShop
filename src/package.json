@@ -1,0 +1,12 @@
+{
+  "name": "pixelshop",
+  "version": "13.0.0",
+  "description": "PixelShop — High-Speed Studio Retouching & Frequency Separation Suite",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron . --no-sandbox"
+  },
+  "author": "Dave Groennesby",
+  "license": "MIT",
+  "type": "commonjs"
+}
