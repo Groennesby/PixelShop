@@ -5,14 +5,20 @@ Maintainer: Dave Groennesby <dave.groennesby@hotmail.com>
 Depends: python3
 Recommends: python3-tk, python3-pil, python3-pil.imagetk, chromium-browser | google-chrome-stable | chromium
 Filename: ./pixelshop_13.0.0_all.deb
-Size: 8874406
-MD5sum: 8bde82c63a1fa78982c60a3832cf2527
-SHA1: b90c58420f2435c8b01710ab7f6d7cd74b2687e9
-SHA256: 9bf5695c68cb8e3d2a27f936cf3013af8450360f2b2cf30837adae96cda89bce
+Size: 8874584
+MD5sum: c7cf74ca06a1ad3476a298467e8ec831
+SHA1: 510d0c7a96ab14a6693382fd69cb7fcb666440f5
+SHA256: c668cd9906b0fa9135202f34172af143ea5d92d9eae2a6f18e844827a98f05a2
 Section: graphics
 Priority: optional
 Homepage: https://collabs-photography.com/software
-Description: PixelShop Studio Edition
- High-Speed Studio Retouching, Frequency Separation & Smart Matting Suite.
- Engineered by Dave Groennesby (Fuse Coding, Made in Belgium).
+Description: PixelShop — High-Speed Studio Retouching & Frequency Separation Suite
+ As a lifelong Linux fan, there was always one dealbreaker: no real Photoshop.
+ GIMP just wasn't it. So I'm fixing it myself. For all designers who want to
+ finally go 100% Linux and leave Microsoft's hidden controls and endless
+ lock-in behind. This is the end of that era.
+ .
+ Designed by Dave Groennesby • Fuse Coding • Made in Belgium
+ Website: https://collabs-photography.com/software
+ Contact: dave.groennesby@hotmail.com
 

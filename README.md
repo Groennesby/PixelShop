@@ -26,6 +26,7 @@ curl -fsSL https://raw.githubusercontent.com/Groennesby/PixelShop/main/packaging
 ```bash
 brew tap Groennesby/pixelshop https://github.com/Groennesby/PixelShop.git
 brew install pixelshop
+brew info pixelshop
 ```
 
 #### Pacman / AUR (Arch Linux / Manjaro / EndeavourOS)

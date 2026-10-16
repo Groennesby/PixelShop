@@ -1,5 +1,5 @@
 class Pixelshop < Formula
-  desc "High-Speed Studio Retouching, Frequency Separation & Smart Matting Suite"
+  desc "As a lifelong Linux fan, there was always one dealbreaker: no real Photoshop. GIMP just wasn't it. So I'm fixing it myself."
   homepage "https://collabs-photography.com/software"
   url "https://github.com/Groennesby/PixelShop/archive/refs/heads/main.tar.gz"
   version "13.0.0"
@@ -15,6 +15,17 @@ class Pixelshop < Formula
       exec "#{Formula["python@3.11"].opt_bin}/python3" "#{libexec}/launcher.py" "$@"
     EOS
     chmod 0755, bin/"pixelshop"
+  end
+
+  def caveats
+    <<~EOS
+      As a lifelong Linux fan, there was always one dealbreaker: no real Photoshop. GIMP just wasn't it.
+      So I'm fixing it myself. For all designers who want to finally go 100% Linux and leave Microsoft's hidden controls and endless lock-in behind.
+      This is the end of that era.
+
+      Designed by Dave Groennesby  •  Fuse Coding  •  Made in Belgium
+      https://collabs-photography.com/software  •  dave.groennesby@hotmail.com
+    EOS
   end
 
   test do
